@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 95f5e836a145a1f49897f5abb452bd3b
+guid: 0254de5cb8eb4de4f8209c55c26c10aa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6320631589510383392
-    second: S_Pattern_Tile_6_0
+      213: 6672313724514619359
+    second: ButtonSlice_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,22 +37,22 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 512
+  spriteBorder: {x: 32, y: 30, z: 32, w: 31}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: S_Pattern_Tile_6_0
+      name: ButtonSlice_1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 512
+        height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 30, y: 30, z: 31, w: 30}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e8fe17be0b9848a0800000000000000
-      internalID: -6320631589510383392
+      spriteID: fdf48a32bf1d89c50800000000000000
+      internalID: 6672313724514619359
       vertices: []
       indices: 
       edges: []
@@ -138,8 +138,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
-    internalID: 0
+    spriteID: 9b0af4bdc71734e4887f2963594bf3d1
+    internalID: 1767976060
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      S_Pattern_Tile_6_0: -6320631589510383392
+      ButtonSlice_1_0: 6672313724514619359
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
