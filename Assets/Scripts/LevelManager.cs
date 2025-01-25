@@ -1,21 +1,21 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // För att ladda/scener
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public static LevelManager Instance; // Singleton
-    public int playerLives = 3;          // Spelarens liv
-    public int currentLevel = 1;         // Nuvarande nivå
-    public int totalZombies = 0;         // Hur många zombies på banan
-    public GameObject gameOverUI;        // UI för "Game Over" (valfritt)
+    public static LevelManager Instance;
+    public int playerLives = 3;
+    public int currentLevel = 1;
+    public int totalZombies = 0;
+    public GameObject gameOverUI;
+    public GameObject winUI; // UI för vinst
 
     private void Awake()
     {
-        // Singleton-mönster: bara en LevelManager får existera
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Behåll LevelManager mellan scener
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -25,77 +25,82 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        // Kolla om vi behöver initialisera något
         InitializeLevel();
     }
 
     private void InitializeLevel()
     {
-        // Resetta zombies på banan
         totalZombies = FindObjectsByType<ZombieController>(FindObjectsSortMode.None).Length;
 
-        // Se till att eventuellt Game Over UI är gömt
         if (gameOverUI != null)
         {
             gameOverUI.SetActive(false);
+        }
+
+        if (winUI != null)
+        {
+            winUI.SetActive(false);
         }
     }
 
     public void PlayerHit()
     {
-        // Hantera spelarens liv om meteoren träffas
         playerLives--;
 
         if (playerLives <= 0)
         {
-            FailState(); // Spelaren dog
+            FailState();
         }
     }
 
     public void ZombieKilled()
     {
-        // Minska antalet zombies på banan
         totalZombies--;
 
-        // Om alla zombies är döda, avsluta nivån
         if (totalZombies <= 0)
         {
             LevelComplete();
         }
     }
-
-    public void GameOver()
+        public void GameOver()
+{
+    if (gameOverUI != null)
     {
-        // Gör GameOver tillgänglig för andra skript
-        FailState();
+        gameOverUI.SetActive(true); // Visa Game Over UI
     }
+
+    // Ladda om samma nivå efter 2 sekunder
+    Invoke(nameof(ReloadLevel), 2f);
+}
 
     private void FailState()
     {
-        // Visa Game Over UI och ladda om nivån
         if (gameOverUI != null)
         {
             gameOverUI.SetActive(true);
         }
 
-        // Ladda om samma nivå efter 2 sekunder
         Invoke(nameof(ReloadLevel), 2f);
     }
 
     private void ReloadLevel()
     {
-        // Ladda om den aktuella nivån
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        playerLives = 3; // Återställ spelarens liv (valfritt)
+        playerLives = 3;
     }
 
     private void LevelComplete()
     {
-        // Avsluta nivå och ladda nästa nivå
         currentLevel++;
         if (currentLevel >= SceneManager.sceneCountInBuildSettings)
         {
-            Debug.Log("Spelet är slut!");
+            // Spelaren har klarat alla nivåer
+            if (winUI != null)
+            {
+                winUI.SetActive(true); // Visa vinstmeddelande
+            }
+
+            Debug.Log("Spelet är slut! Du vann!");
             return;
         }
 
