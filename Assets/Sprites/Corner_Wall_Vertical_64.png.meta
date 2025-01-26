@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 95f5e836a145a1f49897f5abb452bd3b
+guid: e63bad69ef75cbb4294772ff5b37d6a6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6320631589510383392
-    second: S_Pattern_Tile_6_0
+      213: -3687669979462831866
+    second: Corner_Wall_Vertical_64_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,10 +49,10 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 0
+  alignment: 6
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 7, y: 7, z: 7, w: 7}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: S_Pattern_Tile_6_0
+      name: Corner_Wall_Vertical_64_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 64
-        height: 64
+        height: 256
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e8fe17be0b9848a0800000000000000
-      internalID: -6320631589510383392
+      spriteID: 601fe3911b3c2dcc0800000000000000
+      internalID: -3687669979462831866
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      S_Pattern_Tile_6_0: -6320631589510383392
+      Corner_Wall_Vertical_64_0: -3687669979462831866
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
