@@ -75,7 +75,7 @@ public class ZombieController : MonoBehaviour
     }
 
     void MoveBetweenPoints()
-    {
+    	{
         // Rör sig mot nästa patrullpunkt
         Transform targetPoint = patrolPoints[currentPointIndex];
         Vector2 direction = (targetPoint.position - transform.position).normalized;
@@ -90,9 +90,10 @@ public class ZombieController : MonoBehaviour
         // Flippa spriten baserat på rörelseriktning
         if (spriteRenderer != null)
         {
-            spriteRenderer.flipX = direction.x < 0; // Flippar åt vänster om zombien rör sig åt vänster
+           spriteRenderer.flipX = direction.x > 0; // Flippar åt höger om zombien rör sig åt höger
         }
     }
+
 
     void OnCollisionEnter2D(Collision2D collision)
     {

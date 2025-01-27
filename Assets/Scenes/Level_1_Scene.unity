@@ -1350,7 +1350,7 @@ Transform:
   m_GameObject: {fileID: 1162930205}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0239999, y: 0, z: 0}
+  m_LocalPosition: {x: 0.38, y: -0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1852,7 +1852,7 @@ Transform:
   m_GameObject: {fileID: 1341225837}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.144, y: 0.07999992, z: 0}
+  m_LocalPosition: {x: -5.72, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2896,9 +2896,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombie
       objectReference: {fileID: 0}
+    - target: {fileID: 4887291963034616506, guid: 908dee2f15c104d45a5cf542ff884dd1, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6515005786512874335, guid: 908dee2f15c104d45a5cf542ff884dd1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.072
+      value: -0.34
       objectReference: {fileID: 0}
     - target: {fileID: 6515005786512874335, guid: 908dee2f15c104d45a5cf542ff884dd1, type: 3}
       propertyPath: m_LocalPosition.y
