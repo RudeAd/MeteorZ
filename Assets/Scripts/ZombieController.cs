@@ -18,6 +18,17 @@ public class ZombieController : MonoBehaviour
     private int currentPointIndex = 0; // Nuvarande patrullpunkt
 
     private bool isMoving = true; // Om zombien rör sig eller står still
+    private bool isHit = false; // Om zombien är mitt i "träff-effekt"
+
+    [Header("Animation Settings")]
+    public float hitScaleIncrease = 1.5f; // Hur mycket större zombien blir vid träff
+    public float hitDuration = 0.2f; // Hur länge träff-effekten varar
+    public float rotationAmount = 10f; // Rotation mellan -10 och 10 grader
+    public float rotationSpeed = 5f; // Hastighet på rotationen
+
+    [Header("Particle Systems")]
+    public ParticleSystem hitEffect; // Partikelsystem vid träff
+    public ParticleSystem deathEffect; // Partikelsystem vid död
 
     [Header("Audio Settings")]
     public AudioSource audioSource;
@@ -45,7 +56,7 @@ public class ZombieController : MonoBehaviour
             audioSource.clip = idleSound;
             audioSource.loop = true;
             audioSource.Play();
-        } // Saknad klammerparentes är nu tillagd här
+        }
     }
 
     void Update()
@@ -53,6 +64,13 @@ public class ZombieController : MonoBehaviour
         if (isMoving && patrolPoints.Length > 0)
         {
             MoveBetweenPoints();
+        }
+
+        // Rotationsanimation när zombien rör sig
+        if (isMoving)
+        {
+            float rotation = Mathf.Sin(Time.time * rotationSpeed) * rotationAmount;
+            transform.rotation = Quaternion.Euler(0, 0, rotation);
         }
     }
 
@@ -68,6 +86,12 @@ public class ZombieController : MonoBehaviour
         {
             currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
         }
+
+        // Flippa spriten baserat på rörelseriktning
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = direction.x < 0; // Flippar åt vänster om zombien rör sig åt vänster
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -82,10 +106,41 @@ public class ZombieController : MonoBehaviour
     {
         health -= damage;
 
+        // Visa träffeffekt
+        if (!isHit)
+        {
+            StartCoroutine(ShowHitEffect());
+        }
+
+        // Visa partikelsystem vid träff
+        if (hitEffect != null)
+        {
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
+        }
+
         if (health <= 0)
         {
             Die();
         }
+    }
+
+    IEnumerator ShowHitEffect()
+    {
+        isHit = true;
+
+        // Spara ursprunglig skala
+        Vector3 originalScale = transform.localScale;
+
+        // Öka skalan tillfälligt
+        transform.localScale = originalScale * hitScaleIncrease;
+
+        // Vänta en stund
+        yield return new WaitForSeconds(hitDuration);
+
+        // Återställ skalan
+        transform.localScale = originalScale;
+
+        isHit = false;
     }
 
     void Die()
@@ -96,6 +151,12 @@ public class ZombieController : MonoBehaviour
         if (LevelManager.Instance != null)
         {
             LevelManager.Instance.ZombieKilled();
+        }
+
+        // Visa partikelsystem vid död
+        if (deathEffect != null)
+        {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
         }
 
         // Förstör objektet
