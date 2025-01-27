@@ -19,6 +19,11 @@ public class MeteorController : MonoBehaviour
     [Header("Physics Settings")]
     public float gravityScale = 1f;   // Justerar gravitationens påverkan
 
+        [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip damageSound;
+    public AudioClip impactSound;
+
     void Start()
     {
         // Hämta komponenter
@@ -37,6 +42,12 @@ public class MeteorController : MonoBehaviour
         if (levelManager == null)
         {
             Debug.LogError("LevelManager not found in the scene!");
+        }
+
+                meteorRigidbody = GetComponent<Rigidbody2D>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
@@ -81,6 +92,12 @@ public class MeteorController : MonoBehaviour
         {
             TakeDamage(); // Ta skada om meteoren träffas av en kula
         }
+
+                // Spela upp träffljud
+        if (audioSource != null && impactSound != null)
+        {
+            audioSource.PlayOneShot(impactSound);
+        }
     }
 
     void TakeDamage()
@@ -97,6 +114,13 @@ public class MeteorController : MonoBehaviour
             Debug.Log("Game Over triggered!");
             levelManager.GameOver(); // Anropa GameOver
         }
+
+          // Spela upp skadeljud
+        if (audioSource != null && damageSound != null)
+        {
+            audioSource.PlayOneShot(damageSound);
+        }
+
     }
 
     void ShowAim(Vector2 start, Vector2 end)

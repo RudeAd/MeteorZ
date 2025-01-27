@@ -19,6 +19,11 @@ public class ZombieController : MonoBehaviour
 
     private bool isMoving = true; // Om zombien rör sig eller står still
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip idleSound;
+    public AudioClip shootSound;
+
     void Start()
     {
         zombieRigidbody = GetComponent<Rigidbody2D>();
@@ -28,6 +33,19 @@ public class ZombieController : MonoBehaviour
         {
             StartCoroutine(ShootRoutine()); // Börja skjuta om zombien kan skjuta
         }
+
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Spela idle-ljud i loop om det finns
+        if (idleSound != null)
+        {
+            audioSource.clip = idleSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        } // Saknad klammerparentes är nu tillagd här
     }
 
     void Update()
@@ -71,19 +89,18 @@ public class ZombieController : MonoBehaviour
     }
 
     void Die()
-{
-    Debug.Log(gameObject.name + " is dead!");
-
-    // Rapportera till LevelManager att en zombie har dödats
-    if (LevelManager.Instance != null)
     {
-        LevelManager.Instance.ZombieKilled();
+        Debug.Log(gameObject.name + " is dead!");
+
+        // Rapportera till LevelManager att en zombie har dödats
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.ZombieKilled();
+        }
+
+        // Förstör objektet
+        Destroy(gameObject);
     }
-
-    // Förstör objektet
-    Destroy(gameObject);
-}
-
 
     IEnumerator ShootRoutine()
     {
@@ -102,6 +119,12 @@ public class ZombieController : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();
             bulletRigidbody.linearVelocity = Vector2.down * 5f; // Skjuter nedåt, anpassa riktningen om behövs
+        }
+
+        // Spela skjutljud
+        if (audioSource != null && shootSound != null)
+        {
+            audioSource.PlayOneShot(shootSound);
         }
     }
 }

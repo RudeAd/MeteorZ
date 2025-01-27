@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6898185926749270744}
   - component: {fileID: 7998394225633055790}
   - component: {fileID: 5000794941224023302}
-  - component: {fileID: 4903641111526200945}
+  - component: {fileID: 3250468483746203543}
   m_Layer: 0
   m_Name: Wall_Corner_Left_Top_Diagonal_64
   m_TagString: Untagged
@@ -116,8 +116,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!893571522 &4903641111526200945
-CustomCollider2D:
+--- !u!68 &3250468483746203543
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -151,6 +151,11 @@ CustomCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_CustomShapes:
-    m_Shapes: []
-    m_Vertices: []
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 0, y: 0.96}
+  - {x: 1.28, y: 0.96}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
