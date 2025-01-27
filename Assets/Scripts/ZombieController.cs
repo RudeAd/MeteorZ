@@ -71,11 +71,19 @@ public class ZombieController : MonoBehaviour
     }
 
     void Die()
+{
+    Debug.Log(gameObject.name + " is dead!");
+
+    // Rapportera till LevelManager att en zombie har dödats
+    if (LevelManager.Instance != null)
     {
-        // Dör och förstörs
-        Debug.Log(gameObject.name + " is dead!");
-        Destroy(gameObject);
+        LevelManager.Instance.ZombieKilled();
     }
+
+    // Förstör objektet
+    Destroy(gameObject);
+}
+
 
     IEnumerator ShootRoutine()
     {

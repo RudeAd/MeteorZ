@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerLives: 3
-  currentLevel: 1
+  currentLevel: 0
   totalZombies: 1
   gameOverUI: {fileID: 1552688667}
   winUI: {fileID: 1183696823}

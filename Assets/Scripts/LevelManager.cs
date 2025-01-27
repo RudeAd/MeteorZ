@@ -32,6 +32,8 @@ public class LevelManager : MonoBehaviour
     {
         totalZombies = FindObjectsByType<ZombieController>(FindObjectsSortMode.None).Length;
 
+        Debug.Log("Zombies in level: " + totalZombies); // Debug för att se om zombier hittas
+
         if (gameOverUI != null)
         {
             gameOverUI.SetActive(false);
@@ -57,21 +59,24 @@ public class LevelManager : MonoBehaviour
     {
         totalZombies--;
 
+        Debug.Log("Zombie killed! Remaining: " + totalZombies);
+
         if (totalZombies <= 0)
         {
             LevelComplete();
         }
     }
-        public void GameOver()
-{
-    if (gameOverUI != null)
-    {
-        gameOverUI.SetActive(true); // Visa Game Over UI
-    }
 
-    // Ladda om samma nivå efter 2 sekunder
-    Invoke(nameof(ReloadLevel), 2f);
-}
+    public void GameOver()
+    {
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(true); // Visa Game Over UI
+        }
+
+        // Ladda om samma nivå efter 2 sekunder
+        Invoke(nameof(ReloadLevel), 2f);
+    }
 
     private void FailState()
     {
@@ -105,6 +110,7 @@ public class LevelManager : MonoBehaviour
         }
 
         // Ladda nästa nivå
+        Debug.Log("Loading next level: " + currentLevel);
         SceneManager.LoadScene(currentLevel);
     }
 }
