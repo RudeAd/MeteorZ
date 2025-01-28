@@ -1,28 +1,39 @@
 using UnityEngine;
+using TMPro; // För TextMeshPro
 
 public class MeteorController : MonoBehaviour
 {
-    private Rigidbody2D meteorRigidbody; // Hanterar fysiken för meteoren
-    private SpriteRenderer spriteRenderer; // För att byta sprite när meteoren tar skada
-    private LevelManager levelManager; // Referens till LevelManager
+    private Rigidbody2D meteorRigidbody;
+    private SpriteRenderer spriteRenderer;
+    private LevelManager levelManager;
 
     [Header("Drag-and-Shoot Settings")]
-    public LineRenderer aimLine; // Linje som visar riktning och kraft
-    private Vector2 startDragPosition; // Där musen klickades ner
-    private Vector2 endDragPosition;   // Där musen släpptes
-    public float shootForce = 10f;    // Hur hårt meteoren skjuts iväg
+    public LineRenderer aimLine;
+    private Vector2 startDragPosition;
+    private Vector2 endDragPosition;
+    public float shootForce = 10f;
+    public float maxDragLength = 5f;
 
     [Header("Player Stats")]
-    public int lives = 3;             // Meteorns liv
-    public Sprite[] damageSprites;    // Sprites för olika skador
+    public int lives = 3;
+    public Sprite[] damageSprites;
 
     [Header("Physics Settings")]
-    public float gravityScale = 1f;   // Justerar gravitationens påverkan
+    public float gravityScale = 0f; // Ingen gravitation
+    public float spaceFriction = 0.99f; // Friktion för att sakta ner meteoren
 
-        [Header("Audio Settings")]
+    [Header("UI Settings")]
+    public TextMeshProUGUI shotCounterText; // För TextMeshPro
+    private int shotCounter = 0;
+
+    [Header("Audio Settings")]
     public AudioSource audioSource;
     public AudioClip damageSound;
     public AudioClip impactSound;
+
+    [Header("Particle Effects")]
+    public GameObject damageEffect;
+    public GameObject impactEffect;
 
     void Start()
     {
@@ -30,112 +41,154 @@ public class MeteorController : MonoBehaviour
         meteorRigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Ställ in gravitation
+        // Ingen gravitation för rymd
         meteorRigidbody.gravityScale = gravityScale;
 
         // Dölj siktlinjen i början
         aimLine.enabled = false;
 
-        // Hitta LevelManager med den nya metoden
+        // Hitta LevelManager
         levelManager = Object.FindFirstObjectByType<LevelManager>();
-
         if (levelManager == null)
         {
             Debug.LogError("LevelManager not found in the scene!");
         }
 
-                meteorRigidbody = GetComponent<Rigidbody2D>();
-        if (audioSource == null)
+        // Försök hitta ShotCounter-texten
+        if (shotCounterText == null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            shotCounterText = GameObject.Find("ShotCounter")?.GetComponent<TextMeshProUGUI>();
         }
+        if (shotCounterText == null)
+        {
+            Debug.LogError("ShotCounter TMP Text not found! Ensure it exists in the scene.");
+        }
+
+        // Kontrollera partikeleffekter
+        if (damageEffect == null) Debug.LogError("Damage effect prefab is not assigned!");
+        if (impactEffect == null) Debug.LogError("Impact effect prefab is not assigned!");
+
+        // Uppdatera skottcounter
+        UpdateShotCounter();
     }
 
     void Update()
     {
-        // Hanterar musinput för drag-and-shoot
-        if (Input.GetMouseButtonDown(0)) // När musen klickas ner
+        if (Input.GetMouseButtonDown(0))
         {
             startDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            aimLine.enabled = true; // Visa siktlinjen
+            aimLine.enabled = true;
         }
-        else if (Input.GetMouseButton(0)) // När musen dras
+        else if (Input.GetMouseButton(0))
         {
             endDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            ShowAim(startDragPosition, endDragPosition); // Visa pilen
+
+            // Begränsa draglängden
+            Vector2 direction = endDragPosition - startDragPosition;
+            if (direction.magnitude > maxDragLength)
+            {
+                direction = direction.normalized * maxDragLength;
+                endDragPosition = startDragPosition + direction;
+            }
+
+            ShowAim(startDragPosition, endDragPosition);
         }
-        else if (Input.GetMouseButtonUp(0)) // När musen släpps
+        else if (Input.GetMouseButtonUp(0))
         {
             endDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            ShootMeteor(startDragPosition, endDragPosition); // Skjut meteoren
-            aimLine.enabled = false; // Dölj siktlinjen
+
+            // Begränsa draglängden innan skjutning
+            Vector2 direction = endDragPosition - startDragPosition;
+            if (direction.magnitude > maxDragLength)
+            {
+                direction = direction.normalized * maxDragLength;
+                endDragPosition = startDragPosition + direction;
+            }
+
+            ShootMeteor(startDragPosition, endDragPosition);
+            aimLine.enabled = false;
         }
     }
 
     void FixedUpdate()
     {
-        // Friktion för att sakta ner meteoren över tid
-        if (meteorRigidbody.linearVelocity.magnitude > 0.1f)
+        // Simulera inbromsning i rymden
+        if (meteorRigidbody.linearVelocity.magnitude > 0.01f)
         {
-            meteorRigidbody.linearVelocity *= 0.99f; // Minskar hastigheten långsamt
+            meteorRigidbody.linearVelocity *= spaceFriction;
+        }
+        else
+        {
+            meteorRigidbody.linearVelocity = Vector2.zero;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Hantera kollision med zombies eller andra objekt
-        if (collision.gameObject.CompareTag("Zombie"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            // Gör något, t.ex. minska zombie-liv (detta hanteras av zombie-scriptet)
-        }
-        else if (collision.gameObject.CompareTag("Bullet"))
-        {
-            TakeDamage(); // Ta skada om meteoren träffas av en kula
+            TakeDamage();
         }
 
-                // Spela upp träffljud
         if (audioSource != null && impactSound != null)
         {
             audioSource.PlayOneShot(impactSound);
+        }
+
+        // Skapa partikeleffekt vid kollision/studs
+        if (impactEffect != null)
+        {
+            Instantiate(impactEffect, transform.position, Quaternion.identity);
         }
     }
 
     void TakeDamage()
     {
-        // Minska liv och byt sprite
         lives--;
         if (lives > 0)
         {
-            spriteRenderer.sprite = damageSprites[3 - lives]; // Byt sprite baserat på återstående liv
+            spriteRenderer.sprite = damageSprites[3 - lives];
         }
         else
         {
-            // Om liv är 0, starta om leveln eller spelet
             Debug.Log("Game Over triggered!");
-            levelManager.GameOver(); // Anropa GameOver
+            levelManager.GameOver();
         }
 
-          // Spela upp skadeljud
         if (audioSource != null && damageSound != null)
         {
             audioSource.PlayOneShot(damageSound);
         }
 
+        // Skapa partikeleffekt vid skada
+        if (damageEffect != null)
+        {
+            Instantiate(damageEffect, transform.position, Quaternion.identity);
+        }
     }
 
     void ShowAim(Vector2 start, Vector2 end)
     {
-        // Visa en linje från musens startposition till nuvarande position
-        Vector2 direction = end - start; // Riktningen mellan punkterna
-        aimLine.positionCount = 2; // Sätt två punkter i linjen
-        aimLine.SetPosition(0, start); // Startpunkten
-        aimLine.SetPosition(1, start + direction); // Slutpunkten
+        Vector2 direction = end - start;
+        aimLine.positionCount = 2;
+        aimLine.SetPosition(0, start);
+        aimLine.SetPosition(1, start + direction);
     }
 
     void ShootMeteor(Vector2 start, Vector2 end)
     {
-        // Skjut meteoren baserat på drag-and-shoot-mekaniken
-        Vector2 direction = start - end; // Beräkna riktningen
-        meteorRigidbody.AddForce(direction * shootForce, ForceMode2D.Impulse); // Applicera kraft
+        Vector2 direction = start - end;
+        meteorRigidbody.AddForce(direction * shootForce, ForceMode2D.Impulse);
+
+        shotCounter++;
+        UpdateShotCounter();
+    }
+
+    void UpdateShotCounter()
+    {
+        if (shotCounterText != null)
+        {
+            shotCounterText.text = "Shots: " + shotCounter;
+        }
     }
 }

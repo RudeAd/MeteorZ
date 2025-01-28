@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7234634926719862516}
   - component: {fileID: 8182432088720126674}
+  - component: {fileID: 7006758466341183924}
   - component: {fileID: 1039479028213628340}
   - component: {fileID: 3135593097631471567}
   - component: {fileID: 4701084885796902853}
-  - component: {fileID: 7006758466341183924}
   - component: {fileID: 2055950550081841223}
   - component: {fileID: 5726548461681561801}
   m_Layer: 0
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 1d84c5aa1ef62064bae27e18351034ed, type: 3}
   m_Color: {r: 0.59451765, g: 0.68787205, b: 0.754717, a: 1}
   m_FlipX: 0
@@ -93,6 +93,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7006758466341183924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7223894614272555889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aaf3b7f906b4ec45b2fd8006706772c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimLine: {fileID: 4701084885796902853}
+  shootForce: 10
+  maxDragLength: 3
+  lives: 3
+  damageSprites:
+  - {fileID: 21300000, guid: 7625062b6619be64ca2a0f225ef4bef2, type: 3}
+  - {fileID: 21300000, guid: 1d84c5aa1ef62064bae27e18351034ed, type: 3}
+  - {fileID: 21300000, guid: 47bd2a32d0f320f4a8157e52e30f2193, type: 3}
+  gravityScale: 0.1
+  shotCounterText: {fileID: 0}
+  audioSource: {fileID: 5726548461681561801}
+  damageSound: {fileID: 8300000, guid: eb47a6da34dc53e4c9bde51fe1f82bda, type: 3}
+  impactSound: {fileID: 8300000, guid: ca700c68f1007e5439f18d70e98b29d9, type: 3}
+  damageEffect: {fileID: 3871251649724613775, guid: 187684584259e584e8f28a6a509d6845, type: 3}
+  impactEffect: {fileID: 7453963293112149212, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
 --- !u!58 &1039479028213628340
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -272,29 +299,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &7006758466341183924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7223894614272555889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aaf3b7f906b4ec45b2fd8006706772c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aimLine: {fileID: 4701084885796902853}
-  shootForce: 10
-  lives: 3
-  damageSprites:
-  - {fileID: 21300000, guid: 7625062b6619be64ca2a0f225ef4bef2, type: 3}
-  - {fileID: 21300000, guid: 1d84c5aa1ef62064bae27e18351034ed, type: 3}
-  - {fileID: 21300000, guid: 47bd2a32d0f320f4a8157e52e30f2193, type: 3}
-  gravityScale: 0
-  audioSource: {fileID: 5726548461681561801}
-  damageSound: {fileID: 8300000, guid: eb47a6da34dc53e4c9bde51fe1f82bda, type: 3}
-  impactSound: {fileID: 8300000, guid: ca700c68f1007e5439f18d70e98b29d9, type: 3}
 --- !u!96 &2055950550081841223
 TrailRenderer:
   serializedVersion: 3

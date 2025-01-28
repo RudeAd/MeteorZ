@@ -49,6 +49,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.b
       value: 0.1462264
       objectReference: {fileID: 0}
