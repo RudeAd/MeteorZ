@@ -53,8 +53,48 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: SizeModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: NoiseModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: SizeModule.curve.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: SizeModule.y.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: SizeModule.z.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: SizeModule.curve.minScalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: NoiseModule.strength.scalar
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: SizeModule.curve.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
+      propertyPath: InitialModule.startColor.minMaxState
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.b

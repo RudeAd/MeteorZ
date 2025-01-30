@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro; // För TextMeshPro
+using System.Collections;
 
 public class MeteorController : MonoBehaviour
 {
     private Rigidbody2D meteorRigidbody;
     private SpriteRenderer spriteRenderer;
     private LevelManager levelManager;
+    private CameraEffects cameraEffects; // För screenshake & damage overlay
 
     [Header("Drag-and-Shoot Settings")]
     public LineRenderer aimLine;
@@ -23,13 +25,15 @@ public class MeteorController : MonoBehaviour
     public float spaceFriction = 0.99f; // Friktion för att sakta ner meteoren
 
     [Header("UI Settings")]
-    public TextMeshProUGUI shotCounterText; // För TextMeshPro
+    public TextMeshProUGUI shotCounterText;
     private int shotCounter = 0;
 
     [Header("Audio Settings")]
     public AudioSource audioSource;
     public AudioClip damageSound;
     public AudioClip impactSound;
+    public AudioClip drawSound; // Ljud vid uppspänning
+    public AudioClip releaseSound; // Ljud vid släpp
 
     [Header("Particle Effects")]
     public GameObject damageEffect;
@@ -37,24 +41,19 @@ public class MeteorController : MonoBehaviour
 
     void Start()
     {
-        // Hämta komponenter
         meteorRigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // Ingen gravitation för rymd
         meteorRigidbody.gravityScale = gravityScale;
-
-        // Dölj siktlinjen i början
         aimLine.enabled = false;
 
-        // Hitta LevelManager
         levelManager = Object.FindFirstObjectByType<LevelManager>();
+        cameraEffects = Object.FindFirstObjectByType<CameraEffects>();
+
         if (levelManager == null)
         {
             Debug.LogError("LevelManager not found in the scene!");
         }
 
-        // Försök hitta ShotCounter-texten
         if (shotCounterText == null)
         {
             shotCounterText = GameObject.Find("ShotCounter")?.GetComponent<TextMeshProUGUI>();
@@ -64,11 +63,9 @@ public class MeteorController : MonoBehaviour
             Debug.LogError("ShotCounter TMP Text not found! Ensure it exists in the scene.");
         }
 
-        // Kontrollera partikeleffekter
         if (damageEffect == null) Debug.LogError("Damage effect prefab is not assigned!");
         if (impactEffect == null) Debug.LogError("Impact effect prefab is not assigned!");
 
-        // Uppdatera skottcounter
         UpdateShotCounter();
     }
 
@@ -78,12 +75,13 @@ public class MeteorController : MonoBehaviour
         {
             startDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             aimLine.enabled = true;
+
+            // Spela upp ljud när pilen dras
+            PlaySound(drawSound);
         }
         else if (Input.GetMouseButton(0))
         {
             endDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Begränsa draglängden
             Vector2 direction = endDragPosition - startDragPosition;
             if (direction.magnitude > maxDragLength)
             {
@@ -96,8 +94,6 @@ public class MeteorController : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             endDragPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Begränsa draglängden innan skjutning
             Vector2 direction = endDragPosition - startDragPosition;
             if (direction.magnitude > maxDragLength)
             {
@@ -107,12 +103,14 @@ public class MeteorController : MonoBehaviour
 
             ShootMeteor(startDragPosition, endDragPosition);
             aimLine.enabled = false;
+
+            // Spela upp ljud när pilen släpps
+            PlaySound(releaseSound);
         }
     }
 
     void FixedUpdate()
     {
-        // Simulera inbromsning i rymden
         if (meteorRigidbody.linearVelocity.magnitude > 0.01f)
         {
             meteorRigidbody.linearVelocity *= spaceFriction;
@@ -130,12 +128,8 @@ public class MeteorController : MonoBehaviour
             TakeDamage();
         }
 
-        if (audioSource != null && impactSound != null)
-        {
-            audioSource.PlayOneShot(impactSound);
-        }
+        PlaySound(impactSound);
 
-        // Skapa partikeleffekt vid kollision/studs
         if (impactEffect != null)
         {
             Instantiate(impactEffect, transform.position, Quaternion.identity);
@@ -155,15 +149,18 @@ public class MeteorController : MonoBehaviour
             levelManager.GameOver();
         }
 
-        if (audioSource != null && damageSound != null)
-        {
-            audioSource.PlayOneShot(damageSound);
-        }
+        PlaySound(damageSound);
 
-        // Skapa partikeleffekt vid skada
         if (damageEffect != null)
         {
             Instantiate(damageEffect, transform.position, Quaternion.identity);
+        }
+
+        // Lägg till screenshake och damage overlay
+        if (cameraEffects != null)
+        {
+            cameraEffects.TriggerScreenShake();
+            cameraEffects.ShowDamageOverlay();
         }
     }
 
@@ -189,6 +186,24 @@ public class MeteorController : MonoBehaviour
         if (shotCounterText != null)
         {
             shotCounterText.text = "Shots: " + shotCounter;
+            StartCoroutine(AnimateShotCounter());
+        }
+    }
+
+    private IEnumerator AnimateShotCounter()
+    {
+        Vector3 originalScale = shotCounterText.transform.localScale;
+        shotCounterText.transform.localScale = originalScale * 1.3f; // Förstora
+        yield return new WaitForSeconds(0.1f);
+        shotCounterText.transform.localScale = originalScale; // Återgå
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.pitch = Random.Range(0.9f, 1.1f); // Random pitch
+            audioSource.PlayOneShot(clip);
         }
     }
 }
