@@ -140,10 +140,12 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
-  hitScaleIncrease: 1.5
+  hitScaleIncrease: 1.3
   hitDuration: 0.2
   rotationAmount: 10
   rotationSpeed: 5
+  shakeIntensity: 0.1
+  shakeDuration: 0.1
   hitEffect: {fileID: 4374970222837117362, guid: 97e280c387be7db4a9ca71a14a5dd6c1, type: 3}
   deathEffect: {fileID: 7962288270126420449, guid: 187684584259e584e8f28a6a509d6845, type: 3}
   audioSource: {fileID: 651796228301103234}
