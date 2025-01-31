@@ -134,30 +134,52 @@ public class LevelManager : MonoBehaviour
         playerLives = 3;
     }
 
+    // I LevelManager.cs, ändra från private till public
+public void WinGame()
+{
+    if (winUI != null)
+    {
+        winUI.SetActive(true);
+    }
+    Debug.Log("Spelet är slut! Du vann!");
+}
+
+    // I LevelManager.cs
     private void LevelComplete()
     {
+        Debug.Log($"Level {currentLevel} completed");
         currentLevel++;
-        if (currentLevel >= SceneManager.sceneCountInBuildSettings)
+        
+        // Specifik hantering för boss-level
+        if (currentLevel == 5)
+        {
+            if (cameraEffects != null)
+            {
+                cameraEffects.FadeOutAndLoadScene("Level5");
+            }
+            else
+            {
+                SceneManager.LoadScene("Level5");
+            }
+            return;
+        }
+        
+        // Om vi är på sista leveln eller över
+        if (currentLevel > 5)
         {
             WinGame();
             return;
         }
+        
+        // Ladda nästa level
+        string nextLevel = "Level" + currentLevel;
         if (cameraEffects != null)
         {
-            cameraEffects.FadeOutAndLoadScene("Level" + currentLevel);
+            cameraEffects.FadeOutAndLoadScene(nextLevel);
         }
         else
         {
-            SceneManager.LoadScene("Level" + currentLevel);
+            SceneManager.LoadScene(nextLevel);
         }
-    }
-
-    private void WinGame()
-    {
-        if (winUI != null)
-        {
-            winUI.SetActive(true);
-        }
-        Debug.Log("Spelet är slut! Du vann!");
     }
 }

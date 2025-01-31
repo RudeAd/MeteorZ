@@ -153,6 +153,7 @@ MonoBehaviour:
   totalZombies: 3
   gameOverUI: {fileID: 1756302255}
   winUI: {fileID: 1756302254}
+  countdownText: {fileID: 375062583}
 --- !u!4 &6817931
 Transform:
   m_ObjectHideFlags: 0
@@ -844,6 +845,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe3dded3de7258b498516ab6bc9f3b3b, type: 3}
+--- !u!1 &375062583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5898705987083992416, guid: 847aaee95b045b9408c72850851780b2, type: 3}
+  m_PrefabInstance: {fileID: 1756302253}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &468962047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3077,6 +3083,14 @@ PrefabInstance:
     - target: {fileID: 4811848069380449730, guid: 847aaee95b045b9408c72850851780b2, type: 3}
       propertyPath: m_LocalScale.z
       value: 1.3801
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811848069380449730, guid: 847aaee95b045b9408c72850851780b2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -485.5535
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811848069380449730, guid: 847aaee95b045b9408c72850851780b2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -272.7881
       objectReference: {fileID: 0}
     - target: {fileID: 7698721028675315188, guid: 847aaee95b045b9408c72850851780b2, type: 3}
       propertyPath: m_Pivot.x

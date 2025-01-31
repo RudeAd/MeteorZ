@@ -123,10 +123,15 @@ public class ZombieDinosaurBoss : MonoBehaviour
         yield return new WaitForSeconds(damageFlashTime);
         spriteRenderer.color = originalColor;
     }
-
+    
     void Die()
     {
         Debug.Log("Boss defeated!");
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.WinGame(); // Direkt anrop till WinGame istället för BossDefeated
+        }
         Destroy(gameObject);
     }
+
 }

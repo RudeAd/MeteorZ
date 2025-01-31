@@ -2174,7 +2174,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1718623772048273103, guid: 908dee2f15c104d45a5cf542ff884dd1, type: 3}
       propertyPath: canShoot
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1718623772048273103, guid: 908dee2f15c104d45a5cf542ff884dd1, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
@@ -2480,6 +2480,14 @@ PrefabInstance:
     - target: {fileID: 3050504999189212990, guid: 847aaee95b045b9408c72850851780b2, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811848069380449730, guid: 847aaee95b045b9408c72850851780b2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -485.5535
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811848069380449730, guid: 847aaee95b045b9408c72850851780b2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -273.0881
       objectReference: {fileID: 0}
     - target: {fileID: 5898705987083992416, guid: 847aaee95b045b9408c72850851780b2, type: 3}
       propertyPath: m_IsActive

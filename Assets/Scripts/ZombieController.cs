@@ -182,18 +182,22 @@ public class ZombieController : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    // I ZombieController.cs, uppdatera ShootBullet()
     void ShootBullet()
     {
         if (bulletPrefab != null)
         {
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
             Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();
+            BulletController bulletController = bullet.GetComponent<BulletController>();
+            
+            if (bulletController != null)
+            {
+                bulletController.lifetime = 5f; // Sätt livstiden
+            }
+            
             bulletRigidbody.linearVelocity = Vector2.down * 5f;
         }
-
-        if (audioSource != null && shootSound != null)
-        {
-            audioSource.PlayOneShot(shootSound);
-        }
+        // ... resten av koden
     }
 }
