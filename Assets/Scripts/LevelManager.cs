@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class LevelManager : MonoBehaviour
     public int totalZombies = 0;
     public GameObject gameOverUI;
     public GameObject winUI;
+    public GameObject countdownText;
     private CameraEffects cameraEffects;
+    private bool isBossLevel = false;
 
     private void Awake()
     {
@@ -27,16 +30,31 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         cameraEffects = Object.FindFirstObjectByType<CameraEffects>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        InitializeLevel();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
         InitializeLevel();
     }
 
     private void InitializeLevel()
     {
+        totalZombies = 0; // Återställ räknaren
         totalZombies = FindObjectsByType<ZombieController>(FindObjectsSortMode.None).Length;
+        isBossLevel = (SceneManager.GetActiveScene().name == "Level5");
+        
         Debug.Log("Zombies in level: " + totalZombies);
 
         if (gameOverUI != null) gameOverUI.SetActive(false);
         if (winUI != null) winUI.SetActive(false);
+
+        // Försöker hitta countdownText om den inte är satt i Inspector
+        if (countdownText == null)
+        {
+            countdownText = GameObject.Find("CountdownText");
+        }
     }
 
     public void PlayerHit()
@@ -52,9 +70,17 @@ public class LevelManager : MonoBehaviour
     {
         totalZombies--;
         Debug.Log("Zombie killed! Remaining: " + totalZombies);
-        if (totalZombies <= 0)
+        if (totalZombies <= 0 && !isBossLevel)
         {
             LevelComplete();
+        }
+    }
+
+    public void BossDefeated()
+    {
+        if (isBossLevel)
+        {
+            WinGame();
         }
     }
 
@@ -64,7 +90,7 @@ public class LevelManager : MonoBehaviour
         {
             gameOverUI.SetActive(true);
         }
-        Invoke(nameof(ReloadLevelWithFade), 2f);
+        StartCoroutine(RestartLevelCountdown());
     }
 
     private void FailState()
@@ -73,7 +99,26 @@ public class LevelManager : MonoBehaviour
         {
             gameOverUI.SetActive(true);
         }
-        Invoke(nameof(ReloadLevelWithFade), 2f);
+        StartCoroutine(RestartLevelCountdown());
+    }
+
+    private IEnumerator RestartLevelCountdown()
+    {
+        if (gameOverUI != null)
+        {
+            gameOverUI.SetActive(true);
+        }
+
+        for (int i = 3; i > 0; i--)
+        {
+            if (countdownText != null)
+            {
+                countdownText.GetComponent<UnityEngine.UI.Text>().text = i.ToString();
+                countdownText.SetActive(true);
+            }
+            yield return new WaitForSeconds(1f);
+        }
+        ReloadLevelWithFade();
     }
 
     private void ReloadLevelWithFade()
@@ -94,11 +139,7 @@ public class LevelManager : MonoBehaviour
         currentLevel++;
         if (currentLevel >= SceneManager.sceneCountInBuildSettings)
         {
-            if (winUI != null)
-            {
-                winUI.SetActive(true);
-            }
-            Debug.Log("Spelet är slut! Du vann!");
+            WinGame();
             return;
         }
         if (cameraEffects != null)
@@ -109,5 +150,14 @@ public class LevelManager : MonoBehaviour
         {
             SceneManager.LoadScene("Level" + currentLevel);
         }
+    }
+
+    private void WinGame()
+    {
+        if (winUI != null)
+        {
+            winUI.SetActive(true);
+        }
+        Debug.Log("Spelet är slut! Du vann!");
     }
 }
